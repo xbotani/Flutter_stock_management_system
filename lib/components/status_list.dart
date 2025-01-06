@@ -2,61 +2,70 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:store_responsive_dashboard/model.dart';
 import 'package:store_responsive_dashboard/widgets/status_card.dart';
-
 import '../constaints.dart';
 
-final List<BussinessStatus> statusList = [
-  BussinessStatus('Total Sales', '1123456 \$', Icons.show_chart_outlined),
-  BussinessStatus('Total Profit', '11234 \$', Icons.attach_money_outlined),
-  BussinessStatus('Orders', '1236', Icons.shopping_cart_outlined),
-  BussinessStatus('Customers', '11234', Icons.people_outline_outlined),
+// Define a list of business statuses
+final List<BusinessStatus> statusList = [
+  BusinessStatus(
+    name: 'Total Sales',
+    value: '1,123,456 \$',
+    icon: Icons.show_chart_outlined,
+  ),
+  BusinessStatus(
+    name: 'Total Profit',
+    value: '11,234 \$',
+    icon: Icons.attach_money_outlined,
+  ),
+  BusinessStatus(
+    name: 'Orders',
+    value: '1,236',
+    icon: Icons.shopping_cart_outlined,
+  ),
+  BusinessStatus(
+    name: 'Customers',
+    value: '11,234',
+    icon: Icons.people_outline_outlined,
+  ),
 ];
 
 class StatusList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final Size _size = MediaQuery.of(context).size;
+    final Size size = MediaQuery.of(context).size;
+
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Display selection options (Weekly, Monthly, Yearly)
         Row(
-          children: [
+          children: const [
             Text(
               'Weekly',
-              style: TextStyle(
-                fontSize: 16,
-              ),
+              style: TextStyle(fontSize: 16),
             ),
             SizedBox(width: 14),
-            Text('Monthly',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                )),
-            SizedBox(
-              width: 14,
+            Text(
+              'Monthly',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            Text('Yearly',
-                style: TextStyle(
-                  fontSize: 16,
-                )),
+            SizedBox(width: 14),
+            Text(
+              'Yearly',
+              style: TextStyle(fontSize: 16),
+            ),
           ],
         ),
-        SizedBox(
-          height: componentPadding,
+        const SizedBox(height: componentPadding),
+        // Display the status list in a staggered grid view
+        StaggeredGrid.count(
+          crossAxisCount: 4,
+          mainAxisSpacing: componentPadding,
+          crossAxisSpacing: componentPadding,
+          children: List.generate(
+            statusList.length,
+            (index) => StatusCard(data: statusList[index]),
+          ),
         ),
-        StaggeredGridView.countBuilder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            crossAxisCount: 4,
-            mainAxisSpacing: componentPadding,
-            crossAxisSpacing: componentPadding,
-            itemCount: statusList.length,
-            itemBuilder: (context, index) => StatusCard(statusList[index]),
-            staggeredTileBuilder: (index) {
-              if (_size.width > screenXxl) return StaggeredTile.fit(1);
-              if (_size.width > screenSm) return StaggeredTile.fit(2);
-              return StaggeredTile.fit(4);
-            })
       ],
     );
   }

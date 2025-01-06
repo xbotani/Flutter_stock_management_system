@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:store_responsive_dashboard/constaints.dart';
-import 'package:store_responsive_dashboard/pages/news.dart';
 
 class TopBar extends StatelessWidget {
   final bool _showDesktop;
@@ -56,18 +55,7 @@ class TopBar extends StatelessWidget {
             ),
             this._showDesktop
                 ? SizedBox.shrink()
-                : IconButton(
-                    icon: Icon(
-                      Icons.article_outlined,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => NewsPage()),
-                      );
-                    },
-                  )
+                : SizedBox.shrink() // Removed the News button and functionality
           ])
         ],
       ),

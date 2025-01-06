@@ -1,10 +1,18 @@
+// model.dart
+
 import 'package:flutter/material.dart';
 
 class MenuItem {
   final String name;
   final IconData icon;
+  final Widget page; // Page for navigation
 
-  MenuItem(this.name, this.icon);
+  // We keep 'page' as a required named parameter:
+  MenuItem({
+    required this.name,
+    required this.icon,
+    required this.page,
+  });
 }
 
 class Order {
@@ -13,7 +21,14 @@ class Order {
   final int packs;
   final String status;
   final String date;
-  Order(this.icon, this.name, this.packs, this.status, this.date);
+
+  Order({
+    required this.icon,
+    required this.name,
+    required this.packs,
+    required this.status,
+    required this.date,
+  });
 }
 
 class News {
@@ -22,13 +37,22 @@ class News {
   final String time;
   final String description;
 
-  News(this.time, this.title, this.imgUrl, [this.description = '']);
+  News({
+    required this.title,
+    required this.imgUrl,
+    required this.time,
+    this.description = '',
+  });
 }
 
-class BussinessStatus {
+class BusinessStatus {
   final String name;
   final String value;
   final IconData icon;
 
-  BussinessStatus(this.name, this.value, this.icon);
+  BusinessStatus({
+    required this.name,
+    required this.value,
+    required this.icon,
+  });
 }

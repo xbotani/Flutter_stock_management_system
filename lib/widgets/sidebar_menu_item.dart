@@ -5,7 +5,9 @@ import 'package:store_responsive_dashboard/model.dart';
 class SideBarMenuItem extends StatefulWidget {
   final MenuItem item;
   final bool isDesktop;
-  SideBarMenuItem(this.item, [this.isDesktop = false]);
+  final bool showText;  // Added parameter to control text visibility
+
+  SideBarMenuItem(this.item, this.isDesktop, {this.showText = true, Key? key}) : super(key: key);
 
   @override
   _MenuItemState createState() => _MenuItemState();
@@ -14,6 +16,7 @@ class SideBarMenuItem extends StatefulWidget {
 class _MenuItemState extends State<SideBarMenuItem> {
   var _bgColor = Colors.transparent;
   var _iconColor = Colors.white;
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
@@ -46,7 +49,8 @@ class _MenuItemState extends State<SideBarMenuItem> {
                 size: 20,
                 color: _iconColor,
               ),
-              if (widget.isDesktop) ...[
+              // Show text only if showText is true
+              if (widget.showText) ...[
                 SizedBox(
                   width: 16,
                 ),

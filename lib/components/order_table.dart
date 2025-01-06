@@ -2,96 +2,132 @@ import 'package:flutter/material.dart';
 import 'package:store_responsive_dashboard/constaints.dart';
 import '../model.dart';
 
-final orders = <Order>[
+// Define the orders list
+final List<Order> orders = [
   Order(
-      Icons.checkroom_outlined, 'Black T-shirt', 2, 'Delivered', '12/09/2021'),
-  Order(Icons.pool_outlined, 'Black T-shirt', 3, 'Delivered', '12/09/2021'),
-  Order(Icons.dry_cleaning_outlined, 'Black T-shirt', 4, 'Delivered',
-      '12/09/2021'),
-  Order(Icons.beach_access_outlined, 'Black T-shirt', 6, 'Delivered',
-      '12/09/2021'),
+    icon: Icons.checkroom_outlined,
+    name: 'Black T-shirt',
+    packs: 2,
+    status: 'Delivered',
+    date: '12/09/2021',
+  ),
   Order(
-      Icons.checkroom_outlined, 'Black T-shirt', 2, 'Delivered', '12/09/2021'),
+    icon: Icons.pool_outlined,
+    name: 'Swimwear',
+    packs: 3,
+    status: 'Delivered',
+    date: '15/09/2021',
+  ),
+  Order(
+    icon: Icons.dry_cleaning_outlined,
+    name: 'Jacket',
+    packs: 4,
+    status: 'Shipped',
+    date: '20/09/2021',
+  ),
+  Order(
+    icon: Icons.beach_access_outlined,
+    name: 'Sunglasses',
+    packs: 1,
+    status: 'In Transit',
+    date: '25/09/2021',
+  ),
+  Order(
+    icon: Icons.checkroom_outlined,
+    name: 'Jeans',
+    packs: 2,
+    status: 'Delivered',
+    date: '30/09/2021',
+  ),
 ];
 
-final columnNames = ['', '', 'Time', ''];
+// Define column names
+final List<String> columnNames = ['', '', 'Time', ''];
 
 class OrderTable extends StatelessWidget {
   const OrderTable({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final List<DataColumn> columns =
-        columnNames.map((e) => DataColumn(label: Text(e))).toList();
-    final List<DataRow> rows = orders
-        .map((order) => DataRow(cells: [
-              DataCell(Row(
-                children: [
-                  Container(
-                    child: Icon(
-                      order.icon,
-                      color: Theme.of(context).primaryColor,
-                    ),
-                    width: 42,
-                    height: 42,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(40),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 14,
-                              spreadRadius: 2,
-                              offset: Offset(0, 4),
-                              color: Color.fromRGBO(147, 198, 176, 0.2))
-                        ]),
-                  ),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Expanded(
-                    child: Text(
-                      order.name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: textColor),
-                    ),
-                  )
-                ],
-              )),
-              DataCell(Text(
-                order.packs.toString() + ' Packs',
-              )),
-              DataCell(Text(
-                order.date,
-                style: TextStyle(fontStyle: FontStyle.italic),
-              )),
-              DataCell(Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                          width: 1, color: Theme.of(context).primaryColor)),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    child: Text(
-                      order.status,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor, fontSize: 12),
-                    ),
-                  )))
-            ]))
-        .toList();
     return Theme(
       data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
       child: DataTable(
         dataRowHeight: 70,
-        columns: columns,
         columnSpacing: 6,
-        rows: rows,
         headingRowHeight: 0,
         dividerThickness: 0,
+        columns: columnNames.map((e) => DataColumn(label: Text(e))).toList(),
+        rows: orders.map((order) => _buildDataRow(context, order)).toList(),
       ),
+    );
+  }
+
+  DataRow _buildDataRow(BuildContext context, Order order) {
+    return DataRow(
+      cells: [
+        DataCell(Row(
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 14,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 4),
+                    color: const Color.fromRGBO(147, 198, 176, 0.2),
+                  )
+                ],
+              ),
+              child: Icon(
+                order.icon,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                order.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
+              ),
+            ),
+          ],
+        )),
+        DataCell(Text(
+          '${order.packs} Packs',
+        )),
+        DataCell(Text(
+          order.date,
+          style: const TextStyle(fontStyle: FontStyle.italic),
+        )),
+        DataCell(Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              width: 1,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            child: Text(
+              order.status,
+              style: TextStyle(
+                color: Theme.of(context).primaryColor,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        )),
+      ],
     );
   }
 }
